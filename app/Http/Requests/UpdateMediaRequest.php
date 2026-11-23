@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMediaRequest extends FormRequest
 {
@@ -14,9 +15,21 @@ class UpdateMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('media', 'title')->ignore(
+                    $this->route('medium')
+                ),
+            ],
             'type' => ['required', 'in:anime,manga,light_novel'],
-            'release_year' => ['required', 'integer', 'min:1900', 'max:2100'],
+            'release_year' => [
+                'required',
+                'integer',
+                'min:1900',
+                'max:2100',
+            ],
 
             'anime_detail' => [
                 'required_if:type,anime',

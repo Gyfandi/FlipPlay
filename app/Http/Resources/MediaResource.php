@@ -19,6 +19,15 @@ class MediaResource extends JsonResource
             'manga_detail' => $this->whenLoaded('mangaDetail'),
             'light_novel_detail' => $this->whenLoaded('lightNovelDetail'),
 
+            'users' => $this->whenLoaded('users', function () {
+                return $this->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ];
+                });
+            }),
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

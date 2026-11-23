@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMediaRequest;
 use App\Http\Requests\UpdateMediaRequest;
@@ -13,18 +14,30 @@ use Illuminate\Support\Facades\DB;
 class MediaController extends Controller
 {
     public function index()
-    {
-        $media = Media::with([
-            'animeDetail',
-            'mangaDetail',
-            'lightNovelDetail',
-        ])->latest()->get();
+{
+    $search = trim((string) request()->query('search', ''));
 
-        return MediaResource::collection($media)->additional([
-            'success' => true,
-            'message' => 'Daftar media berhasil diambil.',
-        ]);
+    $query = Media::with([
+        'animeDetail',
+        'mangaDetail',
+        'lightNovelDetail',
+    ]);
+
+    // Pencarian berdasarkan judul media.
+    if ($search !== '') {
+        $query->whereRaw(
+            'LOWER(title) LIKE ?',
+            ['%' . Str::lower($search) . '%']
+        );
     }
+
+    $media = $query->latest()->get();
+
+    return MediaResource::collection($media)->additional([
+        'success' => true,
+        'message' => 'Daftar media berhasil diambil.',
+    ]);
+}
 
 
 public function store(StoreMediaRequest $request)
@@ -77,10 +90,11 @@ public function store(StoreMediaRequest $request)
 public function show(int $id)
 {
     $media = Media::with([
-        'animeDetail',
-        'mangaDetail',
-        'lightNovelDetail',
-    ])->findOrFail($id);
+    'animeDetail',
+    'mangaDetail',
+    'lightNovelDetail',
+    'users',
+])->findOrFail($id);
 
     return (new MediaResource($media))->additional([
         'success' => true,
