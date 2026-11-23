@@ -1,66 +1,272 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎬 FlipPlay
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**FlipPlay** adalah REST API berbasis Laravel untuk mengelola data media hiburan, meliputi Anime, Manga, dan Light Novel.
 
-## About Laravel
+Project ini dikembangkan sebagai implementasi pemrograman berorientasi objek (OOP), REST API, validasi data, serta relasi database menggunakan Laravel Eloquent ORM.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **CRUD Media:** Menambahkan, menampilkan, memperbarui, dan menghapus data media.
+- **Multi-jenis Media:** Mendukung Anime, Manga, dan Light Novel.
+- **Relasi Database:** Setiap media memiliki detail sesuai jenisnya.
+- **Validasi Request:** Memastikan data yang diterima sesuai aturan.
+- **Database Transaction:** Menjaga konsistensi data ketika melakukan operasi penyimpanan dan pembaruan.
+- **Cascade Delete:** Menghapus detail terkait secara otomatis ketika data media dihapus.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Teknologi
 
-## Learning Laravel
+- PHP
+- Laravel
+- MySQL
+- Laravel Eloquent ORM
+- REST API
+- Postman
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🗄️ Struktur Database
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Project ini menggunakan empat tabel utama untuk pengelolaan media dan satu tabel pivot.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Tabel | Fungsi |
+|---|---|
+| `media` | Menyimpan informasi utama media |
+| `anime_details` | Menyimpan jumlah episode Anime |
+| `manga_details` | Menyimpan jumlah volume Manga |
+| `light_novel_details` | Menyimpan jumlah chapter Light Novel |
+| `media_user` | Tabel pivot relasi Media dan User |
 
-## Laravel Sponsors
+### Relasi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- `Media` memiliki relasi One-to-One (`HasOne`) dengan `AnimeDetail`.
+- `Media` memiliki relasi One-to-One (`HasOne`) dengan `MangaDetail`.
+- `Media` memiliki relasi One-to-One (`HasOne`) dengan `LightNovelDetail`.
+- Tabel detail memiliki relasi `BelongsTo` terhadap `Media`.
+- `Media` memiliki relasi Many-to-Many (`BelongsToMany`) dengan `User` melalui tabel pivot `media_user`.
 
-### Premium Partners
+## 🚀 Instalasi dan Menjalankan Project
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 1. Clone Repository
 
-## Contributing
+```bash
+git clone https://github.com/Gyfandi/FlipPlay.git
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Masuk ke Direktori Project
 
-## Code of Conduct
+```bash
+cd FlipPlay
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Install Dependencies
 
-## Security Vulnerabilities
+```bash
+composer install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Konfigurasi Environment
 
-## License
+Salin file `.env.example` menjadi `.env`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+```
+
+Untuk Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Konfigurasi Database
+
+Buat database MySQL dengan nama:
+
+```text
+flipplay_db
+```
+
+Sesuaikan konfigurasi database pada file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=flipplay_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan username dan password dengan konfigurasi MySQL lokal.
+
+### 7. Jalankan Migration
+
+```bash
+php artisan migrate
+```
+
+### 8. Jalankan Laravel
+
+```bash
+php artisan serve
+```
+
+API dapat diakses melalui:
+
+```text
+http://127.0.0.1:8000/api
+```
+
+## 📡 Dokumentasi Endpoint API
+
+Base URL:
+
+```text
+http://127.0.0.1:8000/api
+```
+
+| Method | Endpoint | Fungsi |
+|---|---|---|
+| GET | `/media` | Mengambil seluruh data media |
+| POST | `/media` | Menambahkan media baru |
+| GET | `/media/{id}` | Mengambil detail media berdasarkan ID |
+| PUT/PATCH | `/media/{id}` | Memperbarui data media |
+| DELETE | `/media/{id}` | Menghapus data media |
+
+### Contoh Request
+
+#### 1. Menambahkan Anime
+
+**POST** `/media`
+
+```json
+{
+    "title": "Demon Slayer",
+    "type": "anime",
+    "release_year": 2019,
+    "anime_detail": {
+        "episodes": 26
+    }
+}
+```
+
+#### 2. Menambahkan Manga
+
+**POST** `/media`
+
+```json
+{
+    "title": "Naruto",
+    "type": "manga",
+    "release_year": 1999,
+    "manga_detail": {
+        "volumes": 72
+    }
+}
+```
+
+#### 3. Menambahkan Light Novel
+
+**POST** `/media`
+
+```json
+{
+    "title": "Re:Zero",
+    "type": "light_novel",
+    "release_year": 2014,
+    "light_novel_detail": {
+        "chapters": 100
+    }
+}
+```
+
+#### 4. Memperbarui Data
+
+**PUT** `/media/{id}`
+
+Contoh memperbarui data Anime:
+
+```json
+{
+    "title": "Demon Slayer Updated",
+    "type": "anime",
+    "release_year": 2019,
+    "anime_detail": {
+        "episodes": 30
+    }
+}
+```
+
+#### 5. Menghapus Data
+
+**DELETE** `/media/{id}`
+
+Menghapus data media berdasarkan ID. Detail yang terhubung akan ikut terhapus melalui mekanisme cascade delete.
+
+## 📋 HTTP Response Status
+
+| Status Code | Keterangan |
+|---|---|
+| 200 OK | Request berhasil |
+| 201 Created | Data berhasil dibuat |
+| 404 Not Found | Data tidak ditemukan |
+| 422 Unprocessable Entity | Validasi request gagal |
+
+Untuk pengujian endpoint, gunakan Postman dengan header:
+
+```text
+Accept: application/json
+Content-Type: application/json
+```
+
+## 🧪 Pengujian
+
+Pengujian API dilakukan menggunakan Postman, mencakup:
+
+- Pengambilan seluruh data media.
+- Penambahan Anime, Manga, dan Light Novel.
+- Pengambilan detail media berdasarkan ID.
+- Pembaruan data dan perubahan jenis media.
+- Penghapusan media dan pemeriksaan cascade delete.
+- Pengujian validasi terhadap request yang tidak sesuai.
+
+## 📂 Struktur Project
+
+```text
+FlipPlay/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/Api/
+│   │   │   └── MediaController.php
+│   │   ├── Requests/
+│   │   │   ├── StoreMediaRequest.php
+│   │   │   └── UpdateMediaRequest.php
+│   │   └── Resources/
+│   │       └── MediaResource.php
+│   └── Models/
+│       ├── Media.php
+│       ├── AnimeDetail.php
+│       ├── MangaDetail.php
+│       ├── LightNovelDetail.php
+│       └── User.php
+├── database/
+│   └── migrations/
+├── routes/
+│   └── api.php
+├── .env.example
+├── composer.json
+└── README.md
+```
+
+## 👨‍💻 Repository
+
+GitHub: https://github.com/Gyfandi/FlipPlay
+
+---
+
+**FlipPlay**  
+*Laravel REST API Project*
